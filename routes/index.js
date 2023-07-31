@@ -1,6 +1,7 @@
-const router = require('express').Router();
-const apiRoutes = require('./api');
+const express = require('express')
+const router = express.Router();
 
+const apiRoutes = require('./api');
 const keys = require('../config/keys');
 const { apiURL } = keys.app;
 

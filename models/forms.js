@@ -8,12 +8,12 @@ const formSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-//   questions: [
-//     {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: 'Question',
-//     },
-//   ],
+  questions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Question',
+    },
+  ],
 });
 
 // Create and export the Form model
