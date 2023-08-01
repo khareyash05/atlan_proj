@@ -1,4 +1,6 @@
 const express = require("express");
+const router = express.Router();
+
 const { 
     getFormDetail, 
     getAllForms,
@@ -6,10 +8,11 @@ const {
     createForm,
     updateFormDetail
 } = require("../../controllers/formController");
-const router = express.Router();
 
-router.route("/createform").post(createForm)
-router.route("getform").get(getAllForms)
-router.route("getform/:id").get(getFormDetail)
-router.route("/updateForm").patch(updateFormDetail)
-router.route("/deleteForm").delete(deleteForm)
+router.post('/create',createForm)
+router.get("/get",getAllForms)
+router.get("/get/:id",getFormDetail)
+router.put("/update",updateFormDetail)
+router.delete("/delete/:id",deleteForm)
+
+module.exports = router

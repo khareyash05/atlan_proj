@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 const answerSchema = new mongoose.Schema({
-  responseId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Response',
-    required: true,
-  },
   questionId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Question',

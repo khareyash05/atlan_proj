@@ -1,7 +1,8 @@
-const Forms = require("../models/forms")
 const ErrorHandler = require("../utils/errorHandler.js");
 const catchAsyncError = require("../middleware/catchAsyncError.js");
 const ApiFeatures = require("../utils/apiFeatures.js");
+
+const Forms = require("../models/forms")
 
 // Create a form
 exports.createForm = catchAsyncError(async (req, res, next) => {
