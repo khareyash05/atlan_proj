@@ -1,9 +1,13 @@
 const ErrorHandler = require("../utils/errorHandler.js");
 const catchAsyncError = require("../middleware/catchAsyncError.js");
 const ApiFeatures = require("../utils/apiFeatures.js");
+const GoogleSheetsHandler = require("../utils/googleSheetsHandler.js");
 
 const Form = require("../models/forms")
 const Response = require("../models/responses")
+
+const keys = require('../config/keys')
+const { sheets } = keys;
 // Controller function to create a new response
 exports.createResponse = catchAsyncError(async (req, res, next) => {
   const { formId, answers } = req.body;
@@ -45,3 +49,21 @@ exports.deleteResponse = catchAsyncError(async (req, res, next) => {
     next(error);
   }
 });
+
+exports.integrateSheets = catchAsyncError(async ( req,res,next)=>{
+  try {
+    const responseId = req.params.id;
+    const response = await Response.findById(responseId).populate('answers');
+
+    if (!response) {
+      return next(new ErrorHandler('Response not found', 404));
+    }
+
+    // Call the function to append the response to the Google Sheet
+    await GoogleSheetsHandler.appendResponseToSheet(sheets.url, sheets.name, response);
+
+    res.status(200).json({ success: true, message: 'Response integrated with Google Sheets successfully' });
+  } catch (error) {
+    next(error);
+  }
+})

@@ -9,5 +9,9 @@ module.exports = {
     port: process.env.PORT || 5000,
     database: {
       url: process.env.DB
+    },
+    sheets :{
+      url : process.env.SHEET_URL,
+      name : process.env.SHEET_NAME
     }
 }
