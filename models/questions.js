@@ -9,7 +9,7 @@ const questionSchema = new mongoose.Schema({
   },
   questionType: {
     type: String,
-    enum: ['text', 'multiple-choice', 'numeric'], // Example question types
+    enum: ['multiple-choice'], // Example question types
     required: true,
   },
 });

@@ -5,6 +5,7 @@ const formRoutes = require('./forms')
 const answerRoutes = require('./answers')
 const questionRoutes = require('./questions')
 const responseRoutes = require('./responses')
+const graphRoutes = require('./graph')
 
 // form routes
 router.use('/form', formRoutes);
@@ -17,5 +18,8 @@ router.use('/question', questionRoutes);
 
 // response routes
 router.use('/response', responseRoutes);
+
+// graph routes
+router.use('/graph', graphRoutes);
 
 module.exports = router;
