@@ -13,5 +13,9 @@ module.exports = {
     sheets :{
       url : process.env.SHEET_URL,
       name : process.env.SHEET_NAME
+    },
+    emailNotify : {
+      from : process.env.EMAIL_FROM,
+      key : process.env.EMAIL_NOTIFY_KEY
     }
 }

@@ -1,11 +1,12 @@
 const ErrorHandler = require("../utils/errorHandler.js");
 const catchAsyncError = require("../middleware/catchAsyncError.js");
+const {
+  getAdminEmail,
+  sendResponseEmail
+} = require('../config/emailNotifier.js')
 
 const Form = require("../models/forms")
 const Response = require("../models/responses")
-
-const keys = require('../config/keys')
-const { sheets } = keys;
 
 // Controller function to create a new response
 exports.createResponse = catchAsyncError(async (req, res, next) => {
@@ -24,6 +25,12 @@ exports.createResponse = catchAsyncError(async (req, res, next) => {
       formId,
       answers,
     });
+
+    // Get admin's email by admin ID
+    const adminEmail = await getAdminEmail(adminId);
+
+    // Send an email to the admin with the response details
+    await sendResponseEmail(adminEmail, response);
 
     res.status(201).json({ success: true, response });
   } catch (error) {
