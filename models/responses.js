@@ -16,6 +16,11 @@ const responseSchema = new mongoose.Schema({
       ref: 'Answer',
     },
   ],
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
 });
 
 const Response = mongoose.model('Response', responseSchema);

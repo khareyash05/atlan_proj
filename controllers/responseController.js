@@ -1,16 +1,19 @@
 const ErrorHandler = require("../utils/errorHandler.js");
-const catchAsyncError = require("../middleware/catchAsyncError.js");
 const {
   getAdminEmail,
   sendResponseEmail
-} = require('../config/emailNotifier.js')
+} = require('../utils/emailNotifier.js')
+
+const catchAsyncError = require("../middleware/catchAsyncError.js");
 
 const Form = require("../models/forms")
 const Response = require("../models/responses")
+const User = require("../models/user")
 
 // Controller function to create a new response
 exports.createResponse = catchAsyncError(async (req, res, next) => {
   const { formId, answers } = req.body;
+  const {userId} = req.user.id;
 
   try {
     // Check if the form exists
@@ -24,13 +27,21 @@ exports.createResponse = catchAsyncError(async (req, res, next) => {
     const response = await Response.create({
       formId,
       answers,
+      userId : userId
     });
+
+    // Search for admin's Id pertaining to the user
+    currentUser = await User.findById(userId)
+    adminId = currentUser.admin
 
     // Get admin's email by admin ID
     const adminEmail = await getAdminEmail(adminId);
 
-    // Send an email to the admin with the response details
+    // Send an email to the admin with the response details when successful
     await sendResponseEmail(adminEmail, response);
+
+    // Send a copy of responses to user's email id
+    await sendResponseEmail(currentUser.email, response);
 
     res.status(201).json({ success: true, response });
   } catch (error) {

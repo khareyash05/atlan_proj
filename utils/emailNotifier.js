@@ -1,7 +1,7 @@
 const sgMail = require('@sendgrid/mail');
 
 const Admin = require('../models/forms')
-const keys = require('./keys');
+const keys = require('../config/keys');
 const { EMAIL_NOTIFY_KEY,EMAIL_FROM } = keys.emailNotify;
 sgMail.setApiKey(EMAIL_NOTIFY_KEY);
 
