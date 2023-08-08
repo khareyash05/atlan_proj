@@ -27,7 +27,13 @@ async function getAdminEmail(adminId){
   return gotAdmin.email
 }
 
+async function getUsers(adminId){
+  admins = await Admin.findOne(adminId)
+  return admins.users
+}
+
 module.exports = {
   sendResponseEmail,
-  getAdminEmail
+  getAdminEmail,
+  getUsers
 };

@@ -12,6 +12,12 @@ const formSchema = new mongoose.Schema({
       ref: 'Question',
     },
   ],
+  responses : [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Response',
+    },
+  ]
 });
 
 const Form = mongoose.model('Form', formSchema);

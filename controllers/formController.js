@@ -1,6 +1,8 @@
 const ErrorHandler = require("../utils/errorHandler.js");
-const catchAsyncError = require("../middleware/catchAsyncError.js");
 const ApiFeatures = require("../utils/apiFeatures.js");
+const {sendResponseEmail} = require('../utils/emailNotifier.js')
+
+const catchAsyncError = require("../middleware/catchAsyncError.js");
 
 const Forms = require("../models/forms")
 const Question = require("../models/questions");
@@ -26,6 +28,16 @@ exports.createForm = catchAsyncError(async (req, res, next) => {
   const newQuestions = await Question.insertMany(questions);
   const newForm = new Forms({ formName ,newQuestions});
   const savedForm = await newForm.save();
+  
+  // notify admin that form has been created
+  await sendResponseEmail(req.user.email, "Form has been created for users");
+
+  var users = []
+  users = findUsers(req.user.email)
+
+  users.forEach (email => {
+    sendResponseEmail(email, "New Form has been created!! Submit response!");
+  });
 
   res.status(201).json({ success: true, form: savedForm });
 });
@@ -45,6 +57,54 @@ exports.getAllForms = catchAsyncError(async (req, res ) => {
       alumniCount,
     });
 });
+
+// see all responses for a form
+exports.checkResponse = catchAsyncError(async(req,res,next)=>{
+  const responseId = req.params.id;
+  try{
+    // Find the response by its ID
+    const gotResponse = await Forms.findById(responseId);
+
+    if (!gotResponse) {
+      return next(new ErrorHandler('Response not found', 404));
+    }
+
+    const responses = gotResponse.responses
+
+    res.status(200).json({ success: true, responses });
+
+  }catch(error){
+    next(error);
+  }
+})
+
+exports.submitEvaluation = catchAsyncError(async(req,res,next)=>{
+  const responseId = req.params.id;
+  const userId = req.params.userId;
+  const eval = req.body.eval;
+  try{
+    // Find the response by its ID
+    const gotResponse = await Forms.findById(responseId);
+
+    if (!gotResponse) {
+      return next(new ErrorHandler('Response not found', 404));
+    }
+
+    // update the evaluation sent by the admin
+    const user = User.findByIdAndUpdate(userId,{
+      evaluation : eval
+    });
+    
+    if (!user) {
+      return next(new ErrorHandler('User not found', 404));
+    }
+
+    res.status(200).json({ success: true});
+
+  }catch(error){
+    next(error);
+  }
+})
 
 //Get Form Details
 exports.getFormDetail = catchAsyncError(async (req, res, next) => {

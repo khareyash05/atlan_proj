@@ -29,6 +29,7 @@ exports.createResponse = catchAsyncError(async (req, res, next) => {
     const response = await Response.create({
       formId,
       answers,
+      timeStamp : new Date.now(),
       userId : userId
     });
 
@@ -50,52 +51,6 @@ exports.createResponse = catchAsyncError(async (req, res, next) => {
     next(error);
   }
 });
-
-// see all responses for a form
-exports.checkResponse = catchAsyncError(async(req,res,next)=>{
-  const responseId = req.params.id;
-  try{
-    // Find the response by its ID
-    const gotResponse = await Response.findById(responseId);
-
-    if (!gotResponse) {
-      return next(new ErrorHandler('Response not found', 404));
-    }
-
-    res.status(200).json({ success: true, gotResponse });
-
-  }catch(error){
-    next(error);
-  }
-})
-
-exports.submitEvaluation = catchAsyncError(async(req,res,next)=>{
-  const responseId = req.params.id;
-  const userId = req.params.userId;
-  const eval = req.body.eval;
-  try{
-    // Find the response by its ID
-    const gotResponse = await Response.findById(responseId);
-
-    if (!gotResponse) {
-      return next(new ErrorHandler('Response not found', 404));
-    }
-
-    // update the evaluation sent by the admin
-    const user = User.findByIdAndUpdate(userId,{
-      evaluation : eval
-    });
-    
-    if (!user) {
-      return next(new ErrorHandler('User not found', 404));
-    }
-
-    res.status(200).json({ success: true});
-
-  }catch(error){
-    next(error);
-  }
-})
 
 // Controller function to delete a response
 exports.deleteResponse = catchAsyncError(async (req, res, next) => {
