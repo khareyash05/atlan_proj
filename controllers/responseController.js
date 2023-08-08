@@ -8,7 +8,8 @@ const catchAsyncError = require("../middleware/catchAsyncError.js");
 
 const Form = require("../models/forms")
 const Response = require("../models/responses")
-const User = require("../models/user")
+const User = require("../models/user");
+const Answer = require("../models/answers.js");
 
 // Controller function to create a new response
 exports.createResponse = catchAsyncError(async (req, res, next) => {
@@ -24,6 +25,7 @@ exports.createResponse = catchAsyncError(async (req, res, next) => {
     }
 
     // Create the response
+    await Answer.insertMany(answers)
     const response = await Response.create({
       formId,
       answers,
@@ -40,7 +42,7 @@ exports.createResponse = catchAsyncError(async (req, res, next) => {
     // Send an email to the admin with the response details when successful
     await sendResponseEmail(adminEmail, response);
 
-    // Send a copy of responses to user's email id
+    // Send a copy of responses to user's email id(as a receipt of the work done)
     await sendResponseEmail(currentUser.email, response);
 
     res.status(201).json({ success: true, response });
@@ -48,6 +50,52 @@ exports.createResponse = catchAsyncError(async (req, res, next) => {
     next(error);
   }
 });
+
+// see all responses for a form
+exports.checkResponse = catchAsyncError(async(req,res,next)=>{
+  const responseId = req.params.id;
+  try{
+    // Find the response by its ID
+    const gotResponse = await Response.findById(responseId);
+
+    if (!gotResponse) {
+      return next(new ErrorHandler('Response not found', 404));
+    }
+
+    res.status(200).json({ success: true, gotResponse });
+
+  }catch(error){
+    next(error);
+  }
+})
+
+exports.submitEvaluation = catchAsyncError(async(req,res,next)=>{
+  const responseId = req.params.id;
+  const userId = req.params.userId;
+  const eval = req.body.eval;
+  try{
+    // Find the response by its ID
+    const gotResponse = await Response.findById(responseId);
+
+    if (!gotResponse) {
+      return next(new ErrorHandler('Response not found', 404));
+    }
+
+    // update the evaluation sent by the admin
+    const user = User.findByIdAndUpdate(userId,{
+      evaluation : eval
+    });
+    
+    if (!user) {
+      return next(new ErrorHandler('User not found', 404));
+    }
+
+    res.status(200).json({ success: true});
+
+  }catch(error){
+    next(error);
+  }
+})
 
 // Controller function to delete a response
 exports.deleteResponse = catchAsyncError(async (req, res, next) => {

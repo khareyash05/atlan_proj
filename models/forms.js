@@ -1,7 +1,5 @@
-// Require Mongoose
 const mongoose = require('mongoose');
 
-// Define the Form schema
 const formSchema = new mongoose.Schema({
   formName: {
     type: String,
@@ -16,6 +14,5 @@ const formSchema = new mongoose.Schema({
   ],
 });
 
-// Create and export the Form model
 const Form = mongoose.model('Form', formSchema);
 module.exports = Form;

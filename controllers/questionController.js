@@ -6,14 +6,13 @@ const Question = require('../models/questions');
 
 // Controller function to create a new question
 exports.createQuestion = catchAsyncError(async (req, res, next) => {
-  const { questionText, questionType, metadata } = req.body;
+  const { questionText, questionType} = req.body;
 
   try {
     // Create the question
     const question = await Question.create({
       questionText,
       questionType,
-      metadata,
     });
 
     res.status(201).json({ success: true, question });
@@ -25,7 +24,7 @@ exports.createQuestion = catchAsyncError(async (req, res, next) => {
 // Controller function to update a question
 exports.updateQuestion = catchAsyncError(async (req, res, next) => {
   const questionId = req.params.id;
-  const { questionText, questionType, metadata } = req.body;
+  const { questionText, questionType} = req.body;
 
   try {
     // Find the question by its ID and update its details
@@ -34,7 +33,6 @@ exports.updateQuestion = catchAsyncError(async (req, res, next) => {
       {
         questionText,
         questionType,
-        metadata,
       },
       { new: true }
     );

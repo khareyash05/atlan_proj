@@ -10,6 +10,7 @@ const responseSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  // reference to the answers id 
   answers: [
     {
       type: mongoose.Schema.Types.ObjectId,

@@ -1,7 +1,5 @@
-// Require Mongoose
 const mongoose = require('mongoose');
 
-// Define the Question schema
 const questionSchema = new mongoose.Schema({
   questionText: {
     type: String,
@@ -9,11 +7,10 @@ const questionSchema = new mongoose.Schema({
   },
   questionType: {
     type: String,
-    enum: ['multiple-choice'], // Example question types
+    enum: ['multiple-choice'],
     required: true,
   },
 });
 
-// Create and export the Question model
 const Question = mongoose.model('Question', questionSchema);
 module.exports = Question;
