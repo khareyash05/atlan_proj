@@ -17,11 +17,12 @@ app.use(i18nextMiddleware.handle(i18next));
 require('dotenv').config()
 
 require("./config/db")
+require("./controllers/graphController")
 
 app.use(routes);
 
 app.listen(port, () => {
     console.log(
-        `Listening on port ${port}. Visit http://localhost:${port}/ in your browser.`
+        `Listening on port ${port}. Visit http://localhost:${port}/ in your browser.fkhgkdfhgdfjjkgdnhk`
     )}
 )
