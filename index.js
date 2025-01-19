@@ -10,19 +10,23 @@ const keys = require('./config/keys');
 const { port } = keys;
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json())
+app.use(express.json());
 i18next.init(i18nextConfig);
 app.use(i18nextMiddleware.handle(i18next));
 
-require('dotenv').config()
+dotenv.config();
 
-require("./config/db")
-require("./controllers/graphController")
+require('./config/db');
+require('./controllers/graphController');
 
 app.use(routes);
 
-app.listen(port, () => {
+if (require.main === module) {
+  app.listen(port, () => {
     console.log(
-        `Listening on port ${port}. Visit http://localhost:${port}/ in your browser.fkhgkdfhgdfjjkgdnhk`
-    )}
-)
+      `Listening on port ${port}. Visit http://localhost:${port}/ in your browser.`
+    );
+  });
+}
+
+module.exports = app;
