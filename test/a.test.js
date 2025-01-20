@@ -1,38 +1,19 @@
-const fs = require('fs');
-const path = require('path');
-const { add } = require('../h/a.js');
+const { addNumbers } = require('../a.js');
 
 
 // 	
-// 	
 
 
 
 // Test generated using Keploy
-test('test_source_file_loads_after_fix', () => {
+test('test_addNumbers_adds_positive_integers', () => {
 
-
-  const filePath = path.resolve(__dirname, '../a.js');
-  const fixedContent = "const jfnjdfgj = 'test'; const dfhgbdfgh = 'test';";
-  fs.writeFileSync(filePath, fixedContent);
-  expect(() => {
-    require(filePath);
-  }).not.toThrow();
-  // Restore original content after test
-  fs.writeFileSync(filePath, "jfnjdfgj,dfhgbdfgh");
-});
-
-// Test generated using Keploy
-test('test_add_function_is_defined', () => {
-
-  expect(typeof add).toBe('function');
+  expect(addNumbers(2, 3)).toBe(5);
 });
 
 
 // Test generated using Keploy
-test('test_add_function_returns_correct_sum', () => {
+test('test_addNumbers_throws_error_on_invalid_input', () => {
 
-  const result = add();
-  expect(result).toBe(5);
+  expect(() => addNumbers('a', 'b')).toThrow(TypeError);
 });
-
