@@ -9,18 +9,25 @@ const i18nextConfig = require('./locales');
 const keys = require('./config/keys');
 const { port } = keys;
 
+// Middleware setup
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// i18next initialization
 i18next.init(i18nextConfig);
 app.use(i18nextMiddleware.handle(i18next));
 
+// Load environment variables
 dotenv.config();
 
+// Database and controllers
 require('./config/db');
 require('./controllers/graphController');
 
+// Routes
 app.use(routes);
 
+// Start server
 if (require.main === module) {
   app.listen(port, () => {
     console.log(

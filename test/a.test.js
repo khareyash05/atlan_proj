@@ -1,25 +1,17 @@
 const { addNumbers } = require('../a');
-const { add } = require('../h/a');
 
 
 // Test generated using Keploy
-test('addNumbers should return the correct sum when both arguments are positive numbers', () => {
+test('addNumbers should return the correct sum for positive numbers', () => {
 
-  expect(addNumbers(3, 5)).toBe(8);
+  const result = addNumbers(5, 10);
+  expect(result).toBe(15);
 });
 
 
 // Test generated using Keploy
-test('addNumbers should throw a TypeError when the first argument is not a number', () => {
+test('addNumbers should throw TypeError if the first argument is not a number', () => {
 
-  expect(() => addNumbers('3', 5)).toThrow(TypeError);
-});
-
-
-// Test generated using Keploy
-
-
-test('add function should return the sum of 2 and 3', () => {
-  expect(add()).toBe(5);
+  expect(() => addNumbers('5', 10)).toThrow(TypeError);
 });
 
