@@ -81,7 +81,7 @@ exports.checkResponse = catchAsyncError(async(req,res,next)=>{
 exports.submitEvaluation = catchAsyncError(async(req,res,next)=>{
   const responseId = req.params.id;
   const userId = req.params.userId;
-  const eval = req.body.eval;
+  const evaluation = req.body.evaluation;
   try{
     // Find the response by its ID
     const gotResponse = await Forms.findById(responseId);
@@ -92,11 +92,11 @@ exports.submitEvaluation = catchAsyncError(async(req,res,next)=>{
 
     // update the evaluation sent by the admin
     const user = User.findByIdAndUpdate(userId,{
-      evaluation : eval
+      evaluation : evaluation
     });
     
     if (!user) {
-      return next(new ErrorHandler('User not found', 404));
+      return next(new ErrorHandler('User notal  found', 404));
     }
 
     res.status(200).json({ success: true});
